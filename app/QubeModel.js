@@ -332,6 +332,31 @@ var	QubeModel = function(controller) {
 	};
 	
 	this.rotateUpperLayerLeft = function() {
+		clearTimeout(this.ctr.qubeTimeoutID);
+	
+		$("#" + this.getInnerGridID(0)).html("");
+		this.ctr.newQubeGrid(0);
+		
+		$("#" + this.getInnerGridID(0)).css("transform", "rotate(270deg)");
+		
+		var grid = [];
+				
+		for (var row = 0; row < this.qubeSize; row++) {
+			grid[row] = [];
+			for (var column = 0; column < this.qubeSize; column++) {
+				grid[row][column] = this.qube[0][row][column];
+			}
+		}
+		
+		for (var row = 0; row < this.qubeSize; row++) {
+			for (var column = 0; column < this.qubeSize; column++) {
+				this.qube[0][row][column] = grid[column][((this.qubeSize - 1) - row)];
+			}
+		}
+	
+		this.ctr.updateQube();
+		this.ctr.qubeTimer();
+		
 		return false;
 	};
 	
