@@ -208,14 +208,14 @@ var	QubeViews = function(controller, model) {
 				}
 			}
 			
-			$("#" + this.model.getInnerGridID(0)).html("");
-			this.newQubeGrid(0);
+		//	$("#" + this.model.getInnerGridID(0)).html("");
+		//	this.newQubeGrid(0);
 			
 			this.model.qubeLives++;
 			this.model.qubeLevel++;
 			this.model.playEffect("LevelQube");
 			
-			clearTimeout(this.ctr.qubeTimeoutID);
+		//	clearTimeout(this.ctr.qubeTimeoutID);
 		//	this.gameOverEffect();
 			
 		//	clearTimeout(this.model.qubeTimeoutID);
