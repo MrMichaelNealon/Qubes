@@ -308,9 +308,12 @@ var	QubeViews = function(controller, model) {
 	//	clearTimeout(self.ctr.qubeTimeoutID);
 	//	self.ctr.qubeTimeoutID = null;
 		
-		self.rattleTiles(0, 0);
+	//	self.rattleTiles(0, 0);
 		
 		self.model.qubeState = QUBE_STATE_GAME_OVER;
+		
+		//this.ctr.qubeTimeslice = 100;
+		this.ctr.qubeTileTrigger = (1000 - (100 * this.qubeLevel));
 		
 		$("#qube-overlay").css({
 			"opacity": "0.50",

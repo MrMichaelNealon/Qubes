@@ -63,6 +63,7 @@ var	QubeModel = function(controller) {
 		
 		this.qubeState = QUBE_STATE_IDLE;
 		
+			
 		this.newQube();
 		
 		this.track = new Audio("audio/tracks/QubeTrack1.mp3");
