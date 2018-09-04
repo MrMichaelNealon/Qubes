@@ -62,7 +62,6 @@ var	QubeModel = function(controller) {
 		this.qubeScore = 9000;
 		
 		this.qubeState = QUBE_STATE_IDLE;
-		
 			
 		this.newQube();
 		
@@ -71,7 +70,6 @@ var	QubeModel = function(controller) {
 		this.track.loop = true;
 		
 		this.track.play();
-		
 	};
 	
 	
@@ -123,7 +121,6 @@ var	QubeModel = function(controller) {
 //	newTiles()
 //
 	this.newTiles = function() {
-		
 		this.playEffect("NewQube");
 		
 		var	level = this.qubeLevel;
@@ -139,7 +136,6 @@ var	QubeModel = function(controller) {
 			tile = this.qubeNextTile;
 		
 		this.qubeNextTile = this.randomiseTile(QubeTiles.getTile(tiles));
-		
 		this.putTiles(layer, tile);
 	};
 	
@@ -263,9 +259,6 @@ var	QubeModel = function(controller) {
 	this.shiftDown = function() {
 		this.playEffect("KeypressQube");
 		
-	//	if (this.qubeState < QUBE_STATE_READY || this.qubeState > QUBE_STATE_GO)
-	//		return false;
-		
 		if (this.qubeState == QUBE_STATE_LOCKED) {
 			if (this.ctr.dropTileLayer > 1)
 				this.landTile();
@@ -317,7 +310,6 @@ var	QubeModel = function(controller) {
 		}
 		
 		if (! notEmpty) {
-			console.log("Top row is empty");
 			for (var row = 1; row < this.qubeSize; row++) {
 				for (var column = 0; column < this.qubeSize; column++)
 					this.qube[layer][(row - 1)][column] = this.qube[layer][row][column];
@@ -325,8 +317,6 @@ var	QubeModel = function(controller) {
 			for (var column = 0; column < this.qubeSize; column++)
 				this.qube[layer][layer][column] = 0;
 		}
-		else
-			console.log("Top row is not empty");
 		
 		this.ctr.updateQube();
 		this.ctr.lockKeys = false;
@@ -412,7 +402,6 @@ var	QubeModel = function(controller) {
 		}
 		
 		if (! notEmpty) {
-			console.log("Left column is empty");
 			for (var row = 0; row < this.qubeSize; row++) {
 				for (var column = 1; column < this.qubeSize; column++)
 					this.qube[layer][row][(column - 1)] = this.qube[layer][row][column];
@@ -420,8 +409,6 @@ var	QubeModel = function(controller) {
 			for (var row = 0; row < this.qubeSize; row++)
 				this.qube[layer][row][(this.qubeSize - 1)] = 0;
 		}
-		else
-			console.log("Left column is not empty");
 		
 		this.ctr.updateQube();
 		this.ctr.lockKeys = false;
@@ -451,7 +438,6 @@ var	QubeModel = function(controller) {
 		}
 		
 		if (! notEmpty) {
-			console.log("Right column is empty");
 			for (var row = 0; row < this.qubeSize; row++) {
 				for (var column = (this.qubeSize - 1); column > 0; column--)
 					this.qube[layer][row][column] = this.qube[layer][row][(column - 1)];
@@ -459,8 +445,6 @@ var	QubeModel = function(controller) {
 			for (var row = 0; row < this.qubeSize; row++)
 				this.qube[layer][row][0] = 0;
 		}
-		else
-			console.log("Right column is not empty");
 		
 		this.ctr.updateQube();
 		this.ctr.lockKeys = false;
@@ -473,7 +457,6 @@ var	QubeModel = function(controller) {
 		
 		for (var r = 0; r < this.qubeSize; r++) {
 			for (var c = 0; c < this.qubeSize; c++) {
-		console.log("t = " + this.ctr.qubeTileTimer);
 				$("#" + el).append('\
 					' + this.qube[0][r][c] + '&nbsp;\
 				');
@@ -489,9 +472,8 @@ var	QubeModel = function(controller) {
 		this.ctr.projectTiles();
 		
 		if (! (this.ctr.qubeTileTimer % (this.ctr.qubeTileTrigger / 2))) {
-			console.log("Dropping layer " + layer + " at " + this.ctr.qubeTileTimer);
-		
 			this.playEffect("ShiftQube");
+			
 			if (layer > 1) {
 				this.ctr.dropTileLayer--;
 
@@ -541,8 +523,7 @@ var	QubeModel = function(controller) {
 					
 					clearTimeout(this.ctr.qubeTimeoutID);
 					
-					this.playEffect("GameOver");
-					
+					this.playEffect("GameOver");		
 					this.ctr.gameOverEffect();
 				}
 				else
@@ -551,7 +532,6 @@ var	QubeModel = function(controller) {
 		}
 		
 		this.doChecks(checks);
-		
 		this.ctr.updateQube();
 	};
 	
@@ -585,11 +565,9 @@ var	QubeModel = function(controller) {
 		
 		for (var c = 0; c < checks.length; c++) {
 			if (results[c][0]) {
-				console.log("Popping row " + checks[c][0]);
 				this.ctr.popRow(checks[c][0], checks[c][1]);
 			}
 			if (results[c][1]) {
-				console.log("Popping col " + checks[c][0]);
 				this.ctr.popColumn(checks[c][0], checks[c][1]);
 			}
 		}

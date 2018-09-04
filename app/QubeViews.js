@@ -208,18 +208,9 @@ var	QubeViews = function(controller, model) {
 				}
 			}
 			
-		//	$("#" + this.model.getInnerGridID(0)).html("");
-		//	this.newQubeGrid(0);
-			
 			this.model.qubeLives++;
 			this.model.qubeLevel++;
 			this.model.playEffect("LevelQube");
-			
-		//	clearTimeout(this.ctr.qubeTimeoutID);
-		//	this.gameOverEffect();
-			
-		//	clearTimeout(this.model.qubeTimeoutID);
-		//	this.model.qubeTimeoutID = null;
 			
 			this.layer = (this.model.qubeSize - 1);
 			
@@ -232,7 +223,6 @@ var	QubeViews = function(controller, model) {
 				"opacity": "0.01"
 			}, 2000, "linear", function() {
 				$("#qube-overlay").css("display", "none");
-			//	self.ctr.qubeTimer();
 			});
 		}
 		
@@ -275,8 +265,6 @@ var	QubeViews = function(controller, model) {
 			currentClass = "qube-set";
 		}
 		
-		console.log("Animating " + currentClass + " to " + toColour);
-		
 		$("." + currentClass).animate({
 			"background-color": toColour,
 			"opacity": toOpacity
@@ -305,22 +293,16 @@ var	QubeViews = function(controller, model) {
 	};
 	
 	this.gameOverEffect = function() {	
-	//	clearTimeout(self.ctr.qubeTimeoutID);
-	//	self.ctr.qubeTimeoutID = null;
-		
-	//	self.rattleTiles(0, 0);
-		
 		self.model.qubeState = QUBE_STATE_GAME_OVER;
 		
-		//this.ctr.qubeTimeslice = 100;
 		this.ctr.qubeTileTrigger = (1000 - (100 * this.qubeLevel));
 		
 		$("#qube-overlay").css({
 			"opacity": "0.50",
 			"display": "block"
-		}).html("Game Over<br><br>Click to start");
+		}).html("Click to start");
 	};
-	
+	/*
 	this.rattleTiles = function(row, column) {
 		localStorage.setItem("__qubePlayerScore", this.model.qubeScore);
 		$("#info-score-data").html("XXXXXX");
@@ -350,7 +332,7 @@ var	QubeViews = function(controller, model) {
 			});
 		});
 	};
-	
+	*/
 	this.popLeft = function(row, column) {
 		setTimeout(function() {
 			if (column < 0)
@@ -367,7 +349,6 @@ var	QubeViews = function(controller, model) {
 			});
 			
 			self.model.qube[0][row][column] = 0;
-			
 			self.popLeft(row, (column - 1));
 			
 		}, 100);
@@ -389,7 +370,6 @@ var	QubeViews = function(controller, model) {
 			});
 			
 			self.model.qube[0][row][column] = 0;
-			
 			self.popRight(row, (column + 1));
 			
 		}, 100);
@@ -411,7 +391,6 @@ var	QubeViews = function(controller, model) {
 			});
 			
 			self.model.qube[0][row][column] = 0;
-			
 			self.popTop((row - 1), column);
 			
 		}, 100);
@@ -433,7 +412,6 @@ var	QubeViews = function(controller, model) {
 			});
 			
 			self.model.qube[0][row][column] = 0;
-			
 			self.popBottom((row + 1), column);
 			
 		}, 100);

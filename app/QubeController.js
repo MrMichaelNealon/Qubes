@@ -24,7 +24,6 @@ var	QubeController = function(stageElement, qubeElement) {
 	this.qubeTileTimer = -1;
 	
 	this.dropTileLayer = -1;
-	
 	this.qubeTileTrigger;
 	
 	this.lockKeys = false;
@@ -51,16 +50,17 @@ var	QubeController = function(stageElement, qubeElement) {
 	};
 	
 	this.qubeTimer = function() {
-		self.qubeTimeoutID = setTimeout(function() {
-			self.qubeTileTrigger = (1000 - (100 * model.qubeLevel));
-		//	console.log("tileTrigger = " + self.qubeTileTrigger);
+		self.qubeTimeoutID = setTimeout(function() {			
+			if (model.level >= 7)
+				self.qubeTileTrigger = 300;
+			else
+				self.qubeTileTrigger = (1000 - (100 * model.qubeLevel));
+			
 			if (self.qubeTileTimer >= 0)
 				self.qubeTileTimer += self.qubeTimeslice;
 			
 			self.qubeContinue();
 			self.qubeTimer();
-			
-	//		console.log("tick");
 		}, self.qubeTimeslice);
 	};
 	
@@ -73,7 +73,6 @@ var	QubeController = function(stageElement, qubeElement) {
 			});
 		}
 		
-	//	console.log("Continuez..." + self.qubeTileTimer);
 		if (model.qubeState == QUBE_STATE_IDLE) {
 			console.log("IDLE - generating new tile");
 			model.qubeState = QUBE_STATE_READY;
@@ -81,33 +80,21 @@ var	QubeController = function(stageElement, qubeElement) {
 			views.updateQube();
 			
 			this.qubeTileTimer = 0;
-			
-	//		views.animateTile();
-			
-	//		console.log("ready");
 		}
 		if (model.qubeState == QUBE_STATE_READY) {
 			if (self.qubeTileTimer >= (self.qubeTileTrigger) && self.qubeTileTimer < (self.qubeTileTrigger * 2)) {
 				$(".qube-ready").addClass("qube-set");
+				
 				model.qubeState = QUBE_STATE_SET;
-			
-			model.playEffect("TimerQube");
-	//		views.animateTile();
-	//		console.log("set");
+				model.playEffect("TimerQube");
 			}
 		}
 		if (model.qubeState == QUBE_STATE_SET) {
 			if (self.qubeTileTimer >= (self.qubeTileTrigger * 2) && self.qubeTileTimer < (self.qubeTileTrigger * 3)) {
 				$(".qube-set").addClass("qube-go");
-				model.qubeState = QUBE_STATE_GO;
 				
-			model.playEffect("TimerQube");
-	//			$(".qube-go").animate({
-	//				"opacity": "0.01"
-	//			}, self.qubeTileTrigger, "linear");
-			
-	//		views.animateTile();
-	//		console.log("go");
+				model.qubeState = QUBE_STATE_GO;
+				model.playEffect("TimerQube");
 			}
 		}
 		if (model.qubeState == QUBE_STATE_GO) {
@@ -115,15 +102,11 @@ var	QubeController = function(stageElement, qubeElement) {
 				$(".qube-go").addClass("qube-locked").css("opacity", "0.99");
 				
 				model.qubeState = QUBE_STATE_LOCKING;
-			
-			model.playEffect("TimerQube");
-	//		views.animateTile();
-	//		console.log("go");
+				model.playEffect("TimerQube");
 			}
 		}
 		if (model.qubeState == QUBE_STATE_LOCKING) {
 			if (self.qubeTileTimer >= (self.qubeTileTrigger * 4) && self.qubeTileTimer < (self.qubeTileTrigger * 5)) {
-			//	$(".qube-go").addClass("qube-locked");
 				$("#qube-go").addClass("qube-locked");
 				
 				$(".qube-tile").removeClass("qube-go");
@@ -136,19 +119,11 @@ var	QubeController = function(stageElement, qubeElement) {
 		}
 		if (model.qubeState == QUBE_STATE_LOCKED) {
 			if (self.qubeTileTimer >= (self.qubeTileTrigger * 5) && self.qubeTileTimer < (self.qubeTileTrigger * 6)) {
-			//	model.dropTileLayer = 0;
 				model.dropTile();
 			}
 			else
 				model.dropTile();
 		}
-		
-		if (model.qubeState == QUBE_STATE_GAME_OVER) {
-		//	$(".qube-tile").removeClass("qube-ready qube-set qube-go qube-locked qube-clash qube-landed")
-		//	$("#" + model.qubeEl).html("");
-		}
-		
-	//	views.updateQube();
 	};
 	
 	this.gameOverEffect = function() {
@@ -181,7 +156,7 @@ var	QubeController = function(stageElement, qubeElement) {
 		
 		setTimeout(function() {
 			self.startQube();
-		}, 500);
+		}, 500)
 	});
 	
 	$(".control-el").on("click", function() {
@@ -213,16 +188,10 @@ var	QubeController = function(stageElement, qubeElement) {
 		var e = window.event ? window.event : e;
 		var	qubeState = model.qubeState;
 		
-//		if (qubeState < QUBE_STATE_READY || qubeState > QUBE_STATE_GO)
-	//		return false;
-		
-		console.log("Key code: " + e.keyCode);
-		
 		if (this.lockKeys)
 			return;
 		
 		if (e.keyCode == QUBE_KEY_DOWN)
-			//model.shiftDown();
 			$("#control-down").trigger("click");
 		if (e.keyCode == QUBE_KEY_UP)
 			model.shiftUp();
@@ -230,8 +199,6 @@ var	QubeController = function(stageElement, qubeElement) {
 			model.shiftRight();
 		if (e.keyCode == QUBE_KEY_LEFT)
 			model.shiftLeft();
-		
-	//	views.projectTiles();
 	});
 	
 	this.dissolveTile = function(row, column) {
