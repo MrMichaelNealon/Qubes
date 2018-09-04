@@ -39,7 +39,7 @@ var	QubeModel = function(controller) {
 	
 	this.qube = [];
 	
-	this.qubeState;
+	this.qubeState = QUBE_STATE_GAME_OVER;
 	
 	this.qubeDifficulty = QUBE_DIFFICULTY_EASY;
 	

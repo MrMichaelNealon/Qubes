@@ -37,17 +37,21 @@ var	QubeViews = function(controller, model) {
 			height: stageHeight.toString() + "px"
 		};
 		
+		var	overlayLineHeight = stageHeight;
+		
 		if (stageHeight > stageWidth) {
 			qubeArea.top = Math.floor((stageHeight - stageWidth) / 2).toString() + "px";
 			qubeArea.left = "0px";
 			qubeArea.width = qubeArea.height = stageWidth.toString() + "px";
+			overlayLineHeight = stageWidth;
 		}
 		
 		$("#" + this.model.qubeEl).css(qubeArea);
-		$("#footer-controls, #header-info").css({
+		$("#qube-overlay, #footer-controls, #header-info").css({
 			"left": qubeArea.left,
 			"width": qubeArea.width
 		});
+		$("#qube-overlay").css("line-height", overlayLineHeight.toString() + "px")
 	};
 	
 
@@ -130,6 +134,11 @@ var	QubeViews = function(controller, model) {
 		for (var qubeLayer = (qubeSize - 1); qubeLayer >= 0; qubeLayer--) {
 			this.newQubeLayer(qubeLayer);
 		}
+		
+		$("#qube-overlay").css({
+			"display": "block",
+			"opacity": "0.50"
+		}).html("Click to start");
 	}
 	
 	
@@ -198,6 +207,7 @@ var	QubeViews = function(controller, model) {
 					this.model.qube[0][r][c] = 0;
 				}
 			}
+			
 			$("#" + this.model.getInnerGridID(0)).html("");
 			this.newQubeGrid(0);
 			
@@ -206,9 +216,24 @@ var	QubeViews = function(controller, model) {
 			this.model.playEffect("LevelQube");
 			
 			clearTimeout(this.ctr.qubeTimeoutID);
-			this.gameOverEffect();
+		//	this.gameOverEffect();
+			
+		//	clearTimeout(this.model.qubeTimeoutID);
+		//	this.model.qubeTimeoutID = null;
 			
 			this.layer = (this.model.qubeSize - 1);
+			
+			$("#qube-overlay").css({
+				"opacity": "0.50",
+				"display": "block"
+			}).html("Level up!");
+			
+			$("#qube-overlay").animate({
+				"opacity": "0.01"
+			}, 2000, "linear", function() {
+				$("#qube-overlay").css("display", "none");
+			//	self.ctr.qubeTimer();
+			});
 		}
 		
 	};
@@ -280,10 +305,17 @@ var	QubeViews = function(controller, model) {
 	};
 	
 	this.gameOverEffect = function() {	
-		clearTimeout(self.ctr.qubeTimeoutID);
-		self.ctr.qubeTimeoutID = null;
+	//	clearTimeout(self.ctr.qubeTimeoutID);
+	//	self.ctr.qubeTimeoutID = null;
 		
 		self.rattleTiles(0, 0);
+		
+		self.model.qubeState = QUBE_STATE_GAME_OVER;
+		
+		$("#qube-overlay").css({
+			"opacity": "0.50",
+			"display": "block"
+		}).html("Game Over<br><br>Click to start");
 	};
 	
 	this.rattleTiles = function(row, column) {

@@ -65,6 +65,14 @@ var	QubeController = function(stageElement, qubeElement) {
 	};
 	
 	this.qubeContinue = function() {
+		
+		if (model.qubeState == QUBE_STATE_GAME_OVER) {
+			$("#qube-overlay").css({
+				"display": "block",
+				"opacity": "0.50"
+			});
+		}
+		
 	//	console.log("Continuez..." + self.qubeTileTimer);
 		if (model.qubeState == QUBE_STATE_IDLE) {
 			console.log("IDLE - generating new tile");
@@ -162,6 +170,20 @@ var	QubeController = function(stageElement, qubeElement) {
 		views.refreshQube();
 	});
 	
+	$("#qube-overlay").on("click", function() {
+		$("#qube-overlay").animate({
+			"opacity": "0.01"
+		}, 500, "linear", function() {
+			$("#qube-overlay").css("display", "none");
+		});
+		
+		model.playEffect("QubeLanded");
+		
+		setTimeout(function() {
+			self.startQube();
+		}, 500);
+	});
+	
 	$(".control-el").on("click", function() {
 		var	attrID = $(this).attr("id");
 		
@@ -235,7 +257,6 @@ var	QubeController = function(stageElement, qubeElement) {
 	this.newQubeGrid = function(layerIndex) {
 		views.newQubeGrid(layerIndex);
 	};
-	
 	
 };
 
